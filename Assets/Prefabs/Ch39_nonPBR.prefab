@@ -2040,8 +2040,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkingSpeed: 4
   runningSpeed: 7
-  jumpSpeed: 5
-  gravity: 10
+  jumpSpeed: 6
+  gravity: 15
   playerCamera: {fileID: 7027733484740077632}
   lookSpeed: 2
   lookXLimit: 45
