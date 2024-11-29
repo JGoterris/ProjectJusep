@@ -9,6 +9,10 @@ public class Spell : MonoBehaviour
     public SpellScriptableObject SpellToCast;
     private SphereCollider myCollider;
     private Rigidbody myRigidbody;
+    [SerializeField] private AudioSource SpellCollisionSound;
+    [SerializeField] private ParticleSystem SpellCollisionParticleSystem;
+    [SerializeField] private ParticleSystem[] SpellDestroyParticleSystemsOnCollision;
+    
 
     private void Awake(){
         myCollider = GetComponent<SphereCollider>();
@@ -34,6 +38,19 @@ public class Spell : MonoBehaviour
             HealthComponent enemyHealth = other.GetComponent<HealthComponent>();
             enemyHealth.TakeDamage(SpellToCast.DamageAmount);
         }
-        Destroy(this.gameObject);
+
+        if (SpellDestroyParticleSystemsOnCollision != null)
+        {
+            foreach (ParticleSystem p in SpellDestroyParticleSystemsOnCollision)
+            {
+                GameObject.Destroy(p);
+            }
+        }
+
+        if (SpellCollisionSound != null)
+        {
+            SpellCollisionSound.Play();
+        }
+        SpellCollisionParticleSystem.Play();
     }
 }
