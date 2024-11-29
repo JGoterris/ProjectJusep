@@ -77,4 +77,11 @@ public class PlayerScript : MonoBehaviour
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
     }
+
+    void OnTriggerEnter(Collider coll){
+        if(coll.gameObject.tag == "GoblinSword"){
+            HealthComponent myHealth = GetComponent<HealthComponent>();
+            myHealth.TakeDamage(10);
+        }
+    }
 }

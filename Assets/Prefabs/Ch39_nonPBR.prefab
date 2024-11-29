@@ -2091,12 +2091,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 101ec999fc3208f46a0f4319d50ed77b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellToCast: {fileID: 9220065714030024685, guid: b3f6a9b0d072e8c43ae0ca00eae8a3d6, type: 3}
+  spellToCast: {fileID: 3690890651329262451, guid: 8f18e1d8c46c51f429429815455062fc, type: 3}
   maxMana: 100
   currentMana: 0
   manaRechargeRate: 2
   timeBetweenCasts: 1
   castPoint: {fileID: 1483154069}
+  manaBar: {fileID: 0}
 --- !u!114 &5175351942907798507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2110,6 +2111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 50
+  healthBar: {fileID: 0}
 --- !u!1 &7963075260955181418
 GameObject:
   m_ObjectHideFlags: 0
