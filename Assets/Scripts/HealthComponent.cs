@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthComponent : MonoBehaviour
 {
     [SerializeField] private float maxHealth = 50f;
     private float currentHealth;
+    public Image healthBar = null;
 
     private void Awake(){
         currentHealth = maxHealth;
@@ -13,7 +15,18 @@ public class HealthComponent : MonoBehaviour
 
     public void TakeDamage(float damage){
         currentHealth -= damage;
-        if(currentHealth <= 0){
+
+        if (currentHealth < 0)
+        {
+            currentHealth = 0;
+        }
+
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = currentHealth / maxHealth;
+        }
+
+        if(currentHealth == 0){
             Destroy(this.gameObject);
         }
     }

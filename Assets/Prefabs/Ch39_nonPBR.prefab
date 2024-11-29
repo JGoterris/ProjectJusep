@@ -1997,6 +1997,7 @@ GameObject:
   - component: {fileID: 7027733484083102729}
   - component: {fileID: 7027733484083102730}
   - component: {fileID: 1552741028}
+  - component: {fileID: 5175351942907798507}
   m_Layer: 0
   m_Name: Ch39_nonPBR
   m_TagString: Untagged
@@ -2096,6 +2097,19 @@ MonoBehaviour:
   manaRechargeRate: 2
   timeBetweenCasts: 1
   castPoint: {fileID: 1483154069}
+--- !u!114 &5175351942907798507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7874244396576580145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 072c6b91c96c96949b87a23b97a9f89f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 50
 --- !u!1 &7963075260955181418
 GameObject:
   m_ObjectHideFlags: 0

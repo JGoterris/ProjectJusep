@@ -8,4 +8,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Pruebas.unity
     guid: 7d588d213cfbecd4e943611be252d596
+  - enabled: 1
+    path: Assets/Scenes/CombatRoom2.unity
+    guid: c6ac6337c75b97d4a89a96b2cd979476
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: bae93a91004244d4d9225cb4e2486e9b
+  - enabled: 1
+    path: Assets/Scenes/BossArena.unity
+    guid: 2281d08efdf0ebc4580fff05ad33c081
+  - enabled: 1
+    path: Assets/Scenes/CombatRoom1.unity
+    guid: dc5a64645f1e09f44a654dd398d6d7c3
+  - enabled: 1
+    path: Assets/Scenes/InitialRoom.unity
+    guid: e140471fea3d6d648ac8a7fc30c43756
   m_configObjects: {}
