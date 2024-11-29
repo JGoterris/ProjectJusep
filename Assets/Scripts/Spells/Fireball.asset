@@ -16,4 +16,4 @@ MonoBehaviour:
   ManaCost: 10
   Lifetime: 5
   Speed: 15
-  SpellRadius: 0.5
+  SpellRadius: 0.57
