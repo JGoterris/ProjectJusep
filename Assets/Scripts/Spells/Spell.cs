@@ -12,6 +12,8 @@ public class Spell : MonoBehaviour
     [SerializeField] private AudioSource SpellCollisionSound;
     [SerializeField] private ParticleSystem SpellCollisionParticleSystem;
     [SerializeField] private ParticleSystem[] SpellDestroyParticleSystemsOnCollision;
+    private float spellSpeed;
+    private bool exploded;
     
 
     private void Awake(){
@@ -22,22 +24,39 @@ public class Spell : MonoBehaviour
         myRigidbody = GetComponent<Rigidbody>();
         myRigidbody.isKinematic = true;
 
+        spellSpeed = SpellToCast.Speed;
+
+        exploded = false;
+
         Destroy(this.gameObject, SpellToCast.Lifetime);
     }
     private void Update(){
-        if(SpellToCast.Speed > 0)
-            transform.Translate(Vector3.forward * SpellToCast.Speed * Time.deltaTime);
+        if(spellSpeed > 0)
+            transform.Translate(Vector3.forward * spellSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other){
-        // Aplicar los efectos a lo que le demos
-        //if(other.gameObject.CompareTag("Enemy")){
-        //    other.gameObject.GetComponent<Enemy>().TakeDamage(SpellToCast.DamageAmount);
-        //}
+        spellSpeed = 0;
         if(other.gameObject.CompareTag("Enemy")){
             HealthComponent enemyHealth = other.GetComponent<HealthComponent>();
+            ParticleSystem enemyBlood = other.GetComponent<ParticleSystem>();
+            if(enemyBlood != null)
+                enemyBlood.Play();
             enemyHealth.TakeDamage(SpellToCast.DamageAmount);
         }
+
+        if(!exploded){
+            Explode();
+            exploded = true;
+        }
+    }
+
+    private void Explode(){
+        if (SpellCollisionSound != null)
+        {
+            SpellCollisionSound.Play();
+        }
+        SpellCollisionParticleSystem.Play();
 
         if (SpellDestroyParticleSystemsOnCollision != null)
         {
@@ -46,11 +65,5 @@ public class Spell : MonoBehaviour
                 GameObject.Destroy(p);
             }
         }
-
-        if (SpellCollisionSound != null)
-        {
-            SpellCollisionSound.Play();
-        }
-        SpellCollisionParticleSystem.Play();
     }
 }

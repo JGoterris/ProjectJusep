@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerMagicSystem : MonoBehaviour
 {
     [SerializeField] private Spell spellToCast;
+    [SerializeField] private GameObject healthSpell;
     [SerializeField] private float maxMana = 100f;
     [SerializeField] private float currentMana;
     [SerializeField] private float manaRechargeRate = 2f;
@@ -14,9 +15,11 @@ public class PlayerMagicSystem : MonoBehaviour
     [SerializeField] private Transform castPoint;
     private bool castingMagic = false;
     public Image manaBar = null;
+    private HealthComponent myHealth;
 
     private void Awake(){
         currentMana = maxMana;
+        myHealth = GetComponent<HealthComponent>();
     }
     
     private void Update()
@@ -29,6 +32,13 @@ public class PlayerMagicSystem : MonoBehaviour
             UpdateMana(-spellToCast.SpellToCast.ManaCost);
             currentCastTimer = 0;
             CastSpell();
+        }
+
+        if(Input.GetKeyDown("q") && !castingMagic && hasEnoughMana){
+            castingMagic = true;
+            UpdateMana(-30);
+            currentCastTimer = 0;
+            HealthSpell();
         }
 
         if(castingMagic){
@@ -51,6 +61,12 @@ public class PlayerMagicSystem : MonoBehaviour
         Instantiate(spellToCast, castPoint.position, castPoint.rotation);
     }
 
+    void HealthSpell(){
+        myHealth.Health(10);
+        Vector3 point = new Vector3(transform.position.x, 0, transform.position.z);
+        Instantiate(healthSpell, point, castPoint.rotation);
+    }
+
     void UpdateMana(float amount)
     {   
         if (currentMana + amount >= 0) {
@@ -61,10 +77,13 @@ public class PlayerMagicSystem : MonoBehaviour
                 currentMana = maxMana;
             }
 
-            if (manaBar != null)
-            {
-                manaBar.fillAmount = currentMana / maxMana;
-            }
+            
+        } else if (currentMana + amount < 0) {
+            currentMana = 0;
+        }
+        if (manaBar != null)
+        {
+            manaBar.fillAmount = currentMana / maxMana;
         }
     }
 }

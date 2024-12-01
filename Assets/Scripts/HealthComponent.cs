@@ -30,4 +30,18 @@ public class HealthComponent : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    public void Health(float health){
+        currentHealth += health;
+
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = currentHealth / maxHealth;
+        }
+    }
 }

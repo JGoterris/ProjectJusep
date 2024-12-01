@@ -18,6 +18,7 @@ public class PlayerScript : MonoBehaviour
     Animator animator;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
+    private HealthComponent myHealth;
 
     [HideInInspector]
     public bool canMove = true;
@@ -26,6 +27,8 @@ public class PlayerScript : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+
+        myHealth = GetComponent<HealthComponent>();
 
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -80,7 +83,6 @@ public class PlayerScript : MonoBehaviour
 
     void OnTriggerEnter(Collider coll){
         if(coll.gameObject.tag == "GoblinSword"){
-            HealthComponent myHealth = GetComponent<HealthComponent>();
             myHealth.TakeDamage(10);
         }
     }
