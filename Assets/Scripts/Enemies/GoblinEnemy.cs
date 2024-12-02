@@ -5,22 +5,28 @@ using UnityEngine.AI;
 
 public class GoblinEnemy : MonoBehaviour
 {
-    public int rutina;
-    public float cronometro;
     public Quaternion angulo;
     public float grado;
     private Animation ani;
     public GameObject target;
     private bool atacando = false;
     private NavMeshAgent agent;
+    [SerializeField] private float agentSpeed = 4;
     private bool walkpointSet;
     private Vector3 destPoint;
+    private float downSpeed;
+    private float slowCronometro;
+    private float slowDuration;
+    private bool slowed;
     [SerializeField] private float walkpointRange;
     void Start()
     {
         ani = GetComponent<Animation>();
         agent = GetComponent<NavMeshAgent>();
         walkpointSet = false;
+        downSpeed = 0;
+        slowDuration = 0;
+        agent.speed = agentSpeed;
     }
 
     // Update is called once per frame
@@ -35,27 +41,6 @@ public class GoblinEnemy : MonoBehaviour
             ani.Stop("run");
             Patrol();
             ani.Play("walk");
-            /* cronometro += Time.deltaTime;
-            if(cronometro >= 4){
-                rutina = Random.Range(0, 2);
-                rutina = Random.Range(0, 2);
-                cronometro = 0;
-            }
-            switch(rutina){
-                case 0:
-                    ani.Play("combat_idle");
-                    break;
-                case 1:
-                    grado = Random.Range(0, 360);
-                    angulo = Quaternion.Euler(0, grado, 0);
-                    rutina++;
-                    break;
-                case 2:
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, angulo, 0.5f);
-                    transform.Translate(Vector3.forward * 2 * Time.deltaTime);
-                    ani.Play("walk");
-                    break;
-            } */
         } else{
             if(Vector3.Distance(transform.position, target.transform.position) > 2 && !atacando){
                 agent.isStopped = true;
@@ -65,7 +50,7 @@ public class GoblinEnemy : MonoBehaviour
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
                 ani.Stop("walk");
                 ani.Play("run");
-                transform.Translate(Vector3.forward * 3 * Time.deltaTime);
+                transform.Translate(Vector3.forward * (3-downSpeed) * Time.deltaTime);
             } else if (!atacando){
                 ani.Stop("walk");
                 ani.Stop("run");
@@ -76,6 +61,15 @@ public class GoblinEnemy : MonoBehaviour
                 var rotation = Quaternion.LookRotation(lookPos);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
                 StartCoroutine(WaitForAnimationToEnd(ani["attack3"].length));
+            }
+        }
+        if(slowed){
+            slowCronometro += Time.deltaTime;
+            if(slowCronometro >= slowDuration){
+                downSpeed = 0;
+                slowCronometro = 0;
+                slowed = false;
+                agent.speed = agentSpeed;
             }
         }
     }
@@ -108,5 +102,13 @@ public class GoblinEnemy : MonoBehaviour
         if(Physics.Raycast(destPoint, Vector3.down)){
             walkpointSet = true;
         }
+    }
+
+    public void SlowDown(float downS, float duration){
+        downSpeed = downS;
+        slowCronometro = 0;
+        slowDuration = duration;
+        slowed = true;
+        agent.speed -= downSpeed;
     }
 }

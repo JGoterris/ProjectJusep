@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerMagicSystem : MonoBehaviour
 {
-    [SerializeField] private Spell spellToCast;
+    [SerializeField] private Spell spellToCastLeft;
+    [SerializeField] private Spell spellToCastRight;
     [SerializeField] private GameObject healthSpell;
     [SerializeField] private float maxMana = 100f;
     [SerializeField] private float currentMana;
@@ -24,14 +25,22 @@ public class PlayerMagicSystem : MonoBehaviour
     
     private void Update()
     {
-        bool hasEnoughMana = currentMana >= spellToCast.SpellToCast.ManaCost;
+        bool hasEnoughMana = currentMana >= spellToCastLeft.SpellToCast.ManaCost;
 
         if(Input.GetMouseButtonDown(0) && !castingMagic && hasEnoughMana){
             castingMagic = true;
-            // currentMana -= spellToCast.SpellToCast.ManaCost;
-            UpdateMana(-spellToCast.SpellToCast.ManaCost);
+            // currentMana -= spellToCastLeft.SpellToCast.ManaCost;
+            UpdateMana(-spellToCastLeft.SpellToCast.ManaCost);
             currentCastTimer = 0;
-            CastSpell();
+            CastSpell(spellToCastLeft);
+        }
+
+        if(Input.GetMouseButtonDown(1) && !castingMagic && hasEnoughMana){
+            castingMagic = true;
+            // currentMana -= spellToCastLeft.SpellToCast.ManaCost;
+            UpdateMana(-spellToCastRight.SpellToCast.ManaCost);
+            currentCastTimer = 0;
+            CastSpell(spellToCastRight);
         }
 
         if(Input.GetKeyDown("q") && !castingMagic && hasEnoughMana){
@@ -57,7 +66,7 @@ public class PlayerMagicSystem : MonoBehaviour
         }
     }
 
-    void CastSpell(){
+    void CastSpell(Spell spellToCast){
         Instantiate(spellToCast, castPoint.position, castPoint.rotation);
     }
 

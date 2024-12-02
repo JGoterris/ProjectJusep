@@ -40,8 +40,12 @@ public class Spell : MonoBehaviour
         if(other.gameObject.CompareTag("Enemy")){
             HealthComponent enemyHealth = other.GetComponent<HealthComponent>();
             ParticleSystem enemyBlood = other.GetComponent<ParticleSystem>();
+            GoblinEnemy enemyController = other.GetComponent<GoblinEnemy>();
             if(enemyBlood != null)
                 enemyBlood.Play();
+            if(this.tag == "IceSpell"){
+                enemyController.SlowDown(1, 5);
+            }
             enemyHealth.TakeDamage(SpellToCast.DamageAmount);
         }
 
