@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class DarkWizardEnemy : MonoBehaviour
+public class DarkWizardEnemy : MonoBehaviour, Slowable
 {
     private Animator animator;
     private NavMeshAgent agent;
     private DarkWizardMagicSystem magicSystem;
     private HealthComponent health;
 
-    // Modificable variables (on engine)
+    // Modifiable variables (on engine)
     [SerializeField] private float castSpellDelay = 3; // Seconds
     [SerializeField] private Transform target;
+    [SerializeField] private float patrolSpeed = 2;
+    [SerializeField] private float chaseSpeed = 4;
+
+    // Perception variables
     [SerializeField] private float visionRadius = 8;
-    // When the target is at 3 units or less of distance from the mage, it flees away
     [SerializeField] private float scareRadius = 2;
     [SerializeField] private float combatRadius = 6;
 
@@ -22,80 +25,62 @@ public class DarkWizardEnemy : MonoBehaviour
     private float castSpellTimer = 0;
 
     // Patrol variables
-    [SerializeField] private float patrolRange = 4;
 
-    private Vector3 patrolDestination;
 
     // State variables
-    private bool m_attacking = false;
-    private bool m_patroling = false;
-    private bool m_scared = false;
 
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         magicSystem = GetComponent<DarkWizardMagicSystem>();
         health = GetComponent<HealthComponent>();
-
-        m_patroling = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-
         castSpellTimer += Time.deltaTime;
 
-        float distance = Vector3.Distance(agent.transform.position, target.position);
+        float distance = Vector3.Distance(transform.position, target.position);
 
-        
-        
+        if (distance <= combatRadius)
+            Attack();
+        else if (distance <= visionRadius)
+            Chase();
+        else
+            Patrol();
+
     }
 
-    private void Attack()
+    void Patrol()
     {
-        
-        
+        Debug.Log("Patrol");
     }
 
-    private void Chase()
+    void Chase()
     {
+        agent.speed = chaseSpeed;
         agent.SetDestination(target.position);
     }
 
-    private void Patrol()
+    void Attack()
     {
-        if (agent.transform.position.Equals(patrolDestination))
+        if (castSpellTimer >= castSpellDelay)
         {
-            if (RandomPoint(agent.transform.position, patrolRange, out patrolDestination))
-            {
-                agent.SetDestination(patrolDestination);
-            }
+            agent.SetDestination(transform.position);
+            transform.LookAt(target.position);
+            // Calculate rotation
+            Vector3 directorVector = target.position - transform.position;
+            Quaternion rot = Quaternion.LookRotation(directorVector);
+
+            magicSystem.CastFireBall(rot);
+            castSpellTimer = 0;
         }
     }
 
-    private bool RandomPoint(Vector3 center, float range, out Vector3 result)
+    public void SlowDown(float downS, float duration)
     {
-        Vector3 randomPoint = center + Random.insideUnitSphere * range; // Random point in a shpere
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
-        {
-            result = hit.position;
-            return true;
-        }
-        result = Vector3.zero;
-        return false;
+        
     }
-
-    private void RunAway()
-    {
-
-    }
-
-    public void SlowDown()
-    {
-
-    }
-
 }

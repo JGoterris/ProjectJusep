@@ -331,11 +331,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7874244396576580145, guid: 1ac6abf282d028345bad1eb9cc95e07f, type: 3}
   m_PrefabInstance: {fileID: 1782875215}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &203017219 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7353603189314091147, guid: 1ac6abf282d028345bad1eb9cc95e07f, type: 3}
-  m_PrefabInstance: {fileID: 1782875215}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &220014823
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1155,6 +1150,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GOBLIN
       objectReference: {fileID: 0}
+    - target: {fileID: 100702, guid: a8fe9acb1e0f9f74c81a0ac4738f9efe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400702, guid: a8fe9acb1e0f9f74c81a0ac4738f9efe, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1302,7 +1301,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 946075205}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 3}
+  m_LocalPosition: {x: 0, y: 5, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1631136446}
@@ -1440,6 +1439,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7152616875328865804, guid: 200d151662dbd9845b7bbad1cc2a1b0a, type: 3}
   m_PrefabInstance: {fileID: 1107685270}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1334464417 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1483154069, guid: 1ac6abf282d028345bad1eb9cc95e07f, type: 3}
+  m_PrefabInstance: {fileID: 1782875215}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1386486634 stripped
 MonoBehaviour:
@@ -1588,6 +1592,10 @@ PrefabInstance:
       value: DarkWizard
       objectReference: {fileID: 0}
     - target: {fileID: 1000013586557078, guid: 3c9c8a8bf50e6b5439ab9db67bc82586, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013586557078, guid: 3c9c8a8bf50e6b5439ab9db67bc82586, type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
@@ -1671,8 +1679,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cad12624816253f4384aad704298d2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireBall: {fileID: 0}
-  castPoint: {fileID: 0}
+  fireBall: {fileID: 3690890651329262451, guid: 8f18e1d8c46c51f429429815455062fc, type: 3}
+  castPoint: {fileID: 946075206}
 --- !u!114 &1631136448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1686,11 +1694,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   castSpellDelay: 3
-  target: {fileID: 203017219}
+  target: {fileID: 1334464417}
+  patrolSpeed: 2
+  chaseSpeed: 4
   visionRadius: 8
   scareRadius: 3
-  combatRadius: 6
-  patrolRange: 4
+  combatRadius: 7
 --- !u!195 &1631136449
 NavMeshAgent:
   m_ObjectHideFlags: 0
