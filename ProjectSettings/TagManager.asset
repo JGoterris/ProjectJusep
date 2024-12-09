@@ -9,6 +9,7 @@ TagManager:
   - Fire
   - IceSpell
   - GoblinEnemy
+  - Hittable
   layers:
   - Default
   - TransparentFX

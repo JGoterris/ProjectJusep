@@ -77,10 +77,10 @@ public class GoblinEnemy : MonoBehaviour, Slowable
     private System.Collections.IEnumerator WaitForAnimationToEnd(float duration)
     {
         yield return new WaitForSeconds(duration);
-        finAtaque();
+        FinAtaque();
     }
 
-    private void finAtaque(){
+    private void FinAtaque(){
         atacando = false;
         ani.Stop("attack3");
     }

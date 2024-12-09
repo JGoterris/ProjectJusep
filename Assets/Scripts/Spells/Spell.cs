@@ -37,14 +37,16 @@ public class Spell : MonoBehaviour
 
     private void OnTriggerEnter(Collider other){
         spellSpeed = 0;
-        if(other.gameObject.CompareTag("Enemy")){
+        if(other.gameObject.CompareTag("Hittable")){
             HealthComponent enemyHealth = other.GetComponent<HealthComponent>();
             ParticleSystem enemyBlood = other.GetComponent<ParticleSystem>();
-            Slowable enemyController = other.GetComponent<GoblinEnemy>();
-            if(enemyBlood != null)
+            Slowable enemyController = other.gameObject.GetComponent<Slowable>();
+
+            if (enemyBlood != null)
                 enemyBlood.Play();
-            if(this.tag == "IceSpell"){
-                enemyController.SlowDown(1, 5);
+            if(CompareTag("IceSpell"))
+            {
+                enemyController.SlowDown(2, 5);
             }
             enemyHealth.TakeDamage(SpellToCast.DamageAmount);
         }

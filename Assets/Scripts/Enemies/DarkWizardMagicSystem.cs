@@ -8,8 +8,18 @@ public class DarkWizardMagicSystem : MonoBehaviour
     [SerializeField] private Spell fireBall;
     [SerializeField] private Transform castPoint;
 
-    public void CastFireBall(Quaternion rotation)
+    public void CastSpell(Quaternion rotation)
     {
         Instantiate(fireBall, castPoint.position, rotation);
+    }
+
+    public Spell GetSpell()
+    {
+        return fireBall;
+    }
+
+    public Transform GetCastPoint()
+    {
+        return castPoint;
     }
 }
