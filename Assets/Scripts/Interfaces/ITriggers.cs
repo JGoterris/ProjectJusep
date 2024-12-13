@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface Slowable
+public interface ITriggers
 {
-    public void SlowDown(float downS, float duration);
+    public void Trigger(BossEnemy boss);
 }
