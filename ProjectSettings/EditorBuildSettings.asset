@@ -11,9 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CombatRoom2.unity
     guid: c6ac6337c75b97d4a89a96b2cd979476
-  - enabled: 1
-    path: Assets/Scenes/Menu.unity
-    guid: bae93a91004244d4d9225cb4e2486e9b
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/BossArena.unity
     guid: 2281d08efdf0ebc4580fff05ad33c081
@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CombatRoom1.unity
     guid: 8e1cf8aee2cded647bf8c3279886fe47
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: bbc7f01cfff8be141965d553e47bdc12
   m_configObjects: {}
