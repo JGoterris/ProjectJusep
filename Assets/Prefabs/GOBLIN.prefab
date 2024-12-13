@@ -11601,7 +11601,7 @@ GameObject:
   - component: {fileID: 898505746408740173}
   m_Layer: 0
   m_Name: GOBLIN
-  m_TagString: Enemy
+  m_TagString: Hittable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16445,7 +16445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 072c6b91c96c96949b87a23b97a9f89f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 20
   healthBar: {fileID: 0}
 --- !u!195 &898505746408740173
 NavMeshAgent:
