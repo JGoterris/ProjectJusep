@@ -10,11 +10,13 @@ public class PlayerScript : MonoBehaviour
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
     public float gravity = 20.0f;
+    public AudioClip[] audioClips;
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
 
     CharacterController characterController;
+    AudioSource audioSource;
     Animator animator;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
@@ -29,6 +31,7 @@ public class PlayerScript : MonoBehaviour
         animator = GetComponent<Animator>();
 
         myHealth = GetComponent<HealthComponent>();
+        audioSource = GetComponent<AudioSource>();
 
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -74,6 +77,15 @@ public class PlayerScript : MonoBehaviour
             bool hasVerticalInput = !Mathf.Approximately(Input.GetAxis("Vertical"), 0);
             bool isWalking = hasHorizontalInput || hasVerticalInput;
             animator.SetBool("isWalking", isWalking);
+            audioSource.clip = isRunning ? audioClips[1] : audioClips[0];
+            if(isWalking){
+                if(!audioSource.isPlaying)
+                {
+                    audioSource.Play();
+                }
+            } else {
+                audioSource.Stop();
+            }
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);

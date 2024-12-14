@@ -38,9 +38,12 @@ public class Spell : MonoBehaviour
     private void OnTriggerEnter(Collider other){
         spellSpeed = 0;
         if(other.gameObject.CompareTag("Hittable")){
-            IDamageable enemyHealth = other.GetComponent<IDamageable>();
+            Debug.Log("Hit " + other.gameObject.name);
+            Component[] slowableComponents = other.gameObject.GetComponents(typeof(ISlowable));
+            Component[] damageableComponents = other.gameObject.GetComponents(typeof(IDamageable));
+            IDamageable enemyHealth = damageableComponents[0] as IDamageable;
             ParticleSystem enemyBlood = other.GetComponent<ParticleSystem>();
-            ISlowable enemyController = other.gameObject.GetComponent<ISlowable>();
+            ISlowable enemyController = slowableComponents[0] as ISlowable;
 
             if (enemyBlood != null)
                 enemyBlood.Play();

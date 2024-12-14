@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class DarkWizardEnemy : MonoBehaviour, Slowable
+public class DarkWizardEnemy : MonoBehaviour, ISlowable
 {
     private Animator animator;
     private NavMeshAgent agent;
