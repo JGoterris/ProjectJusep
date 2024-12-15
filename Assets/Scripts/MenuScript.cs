@@ -13,5 +13,10 @@ public class MenuScript : MonoBehaviour
     {
         Application.LoadLevel("InitialRoom");
     }
+
+    public void story()
+    {
+        Application.LoadLevel("Historia");
+    }
 }
 

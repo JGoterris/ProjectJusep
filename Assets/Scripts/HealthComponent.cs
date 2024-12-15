@@ -27,7 +27,9 @@ public class HealthComponent : MonoBehaviour, IDamageable
         }
 
         if(currentHealth == 0){
-            Destroy(this.gameObject);
+            Component[] dieComponents = this.gameObject.GetComponents(typeof(IDeath));
+            IDeath dieComponent = dieComponents[0] as IDeath;
+            dieComponent.die();
         }
     }
 

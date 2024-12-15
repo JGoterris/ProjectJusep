@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 
-public class PlayerScript : MonoBehaviour
+public class PlayerScript : MonoBehaviour, IDeath
 {
     public float walkingSpeed = 7.5f;
     public float runningSpeed = 11.5f;
@@ -97,5 +97,9 @@ public class PlayerScript : MonoBehaviour
         if(coll.gameObject.tag == "GoblinSword"){
             myHealth.TakeDamage(10);
         }
+    }
+
+    public void die(){
+        Destroy(this.gameObject);
     }
 }

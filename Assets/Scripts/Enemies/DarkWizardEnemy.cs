@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class DarkWizardEnemy : MonoBehaviour, ISlowable
+public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath
 {
     private Animator animator;
     private NavMeshAgent agent;
@@ -56,12 +56,16 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable
     Vector3 repositionVector;
     Vector3 patrolDestination;
 
+    public AudioClip[] audioClips;
+    private AudioSource audioSource;
+
 
     void Awake()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         magicSystem = GetComponent<DarkWizardMagicSystem>();
+        audioSource = GetComponent<AudioSource>();
 
         patrolDestination = new Vector3(0, 0, 0);
         repositionVector = new Vector3(0, 0, 0);
@@ -82,6 +86,8 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable
             if (!m_hostile && distance < visionRadius)
             {
                 m_hostile = true;
+                audioSource.clip = audioClips[0];
+                audioSource.Play();
                 animator.SetBool("patrolling", false);
                 animator.SetBool("chasing", true);
             }
@@ -257,5 +263,9 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable
         slowedTimer = 0;
         slowedDuration = duration;
         speedReduction = downS;
+    }
+
+    public void die(){
+        Destroy(this.gameObject);
     }
 }

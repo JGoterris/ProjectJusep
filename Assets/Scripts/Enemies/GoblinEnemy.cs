@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class GoblinEnemy : MonoBehaviour, ISlowable
+public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath
 {
     public Quaternion angulo;
     public float grado;
@@ -18,11 +18,15 @@ public class GoblinEnemy : MonoBehaviour, ISlowable
     private float slowCronometro;
     private float slowDuration;
     private bool slowed;
+    private bool died = false;
+    private AudioSource audioSource;
     [SerializeField] private float walkpointRange;
+    public AudioClip[] audioClips;
     void Start()
     {
         ani = GetComponent<Animation>();
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
         walkpointSet = false;
         downSpeed = 0;
         slowDuration = 0;
@@ -52,6 +56,8 @@ public class GoblinEnemy : MonoBehaviour, ISlowable
                 ani.Play("run");
                 transform.Translate(Vector3.forward * (3-downSpeed) * Time.deltaTime);
             } else if (!atacando){
+                audioSource.clip = audioClips[0];
+                audioSource.Play();
                 ani.Stop("walk");
                 ani.Stop("run");
                 ani.Play("attack3");
@@ -110,5 +116,23 @@ public class GoblinEnemy : MonoBehaviour, ISlowable
         slowDuration = duration;
         slowed = true;
         agent.speed -= downSpeed;
+    }
+
+    private System.Collections.IEnumerator WaitForAnimationToDestroy(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Destroy(this.gameObject);
+    }
+    
+    public void die(){
+        // No sé por qué no va
+        if(!died) {
+            ani.Stop("walk");
+            ani.Stop("run");
+            ani.Stop("attack3");
+            ani.Play("death");
+            StartCoroutine(WaitForAnimationToDestroy(ani["death"].length));
+            died = true;
+        }
     }
 }
