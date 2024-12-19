@@ -14,7 +14,7 @@ public class PlayerScript : MonoBehaviour, IDeath
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
-    private bool paused = false;
+
 
     CharacterController characterController;
     AudioSource audioSource;
@@ -44,18 +44,6 @@ public class PlayerScript : MonoBehaviour, IDeath
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)){
-			if(paused)
-            {
-                Time.timeScale = 1f;
-                paused = false;
-            }
-            else
-            {
-                Time.timeScale = 0f;
-                paused = true;
-            }
-        }
         // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -87,7 +75,7 @@ public class PlayerScript : MonoBehaviour, IDeath
         characterController.Move(moveDirection * Time.deltaTime);
 
         // Player and Camera rotation
-        if (canMove && !paused)
+        if (canMove && Time.timeScale != 0)
         {
             bool hasHorizontalInput = !Mathf.Approximately(Input.GetAxis("Horizontal"), 0);
             bool hasVerticalInput = !Mathf.Approximately(Input.GetAxis("Vertical"), 0);
@@ -118,5 +106,4 @@ public class PlayerScript : MonoBehaviour, IDeath
     public void die(){
         Destroy(this.gameObject);
     }
-
 }

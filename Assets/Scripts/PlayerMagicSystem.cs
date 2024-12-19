@@ -27,7 +27,7 @@ public class PlayerMagicSystem : MonoBehaviour
     {
         bool hasEnoughMana = currentMana >= spellToCastLeft.SpellToCast.ManaCost;
 
-        if(Input.GetMouseButtonDown(0) && !castingMagic && hasEnoughMana){
+        if(Time.timeScale != 0 && Input.GetMouseButtonDown(0) && !castingMagic && hasEnoughMana){
             castingMagic = true;
             // currentMana -= spellToCastLeft.SpellToCast.ManaCost;
             UpdateMana(-spellToCastLeft.SpellToCast.ManaCost);
@@ -35,7 +35,7 @@ public class PlayerMagicSystem : MonoBehaviour
             CastSpell(spellToCastLeft);
         }
 
-        if(Input.GetMouseButtonDown(1) && !castingMagic && hasEnoughMana){
+        if(Time.timeScale != 0 && Input.GetMouseButtonDown(1) && !castingMagic && hasEnoughMana){
             castingMagic = true;
             // currentMana -= spellToCastLeft.SpellToCast.ManaCost;
             UpdateMana(-spellToCastRight.SpellToCast.ManaCost);
@@ -43,7 +43,7 @@ public class PlayerMagicSystem : MonoBehaviour
             CastSpell(spellToCastRight);
         }
 
-        if(Input.GetKeyDown("q") && !castingMagic && hasEnoughMana){
+        if(Time.timeScale != 0 && Input.GetKeyDown("q") && !castingMagic && hasEnoughMana){
             castingMagic = true;
             UpdateMana(-30);
             currentCastTimer = 0;
