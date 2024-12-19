@@ -33,6 +33,9 @@ public class PlayerScript : MonoBehaviour, IDeath
         myHealth = GetComponent<HealthComponent>();
         audioSource = GetComponent<AudioSource>();
 
+        AudioListener.volume = PlayerPrefs.GetFloat("volume");
+        AudioListener.pause = PlayerPrefs.GetInt("isMuted") == 1 ? true : false;
+
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -102,4 +105,5 @@ public class PlayerScript : MonoBehaviour, IDeath
     public void die(){
         Destroy(this.gameObject);
     }
+
 }

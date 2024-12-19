@@ -1,9 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
+    [SerializeField] private GameObject menu;
+    [SerializeField] private GameObject settings;
+    [SerializeField] private GameObject controls;
+    [SerializeField] private Slider sliderVolume;
+    [SerializeField] private Toggle toggleVolume;
+
     public void doExitGame()
     {
         Application.Quit();
@@ -17,6 +24,28 @@ public class MenuScript : MonoBehaviour
     public void story()
     {
         Application.LoadLevel("Historia");
+    }
+    public void openSettings(){
+        menu.SetActive(false);
+        settings.SetActive(true);
+    }
+    public void closeSettings(){
+        menu.SetActive(true);
+        settings.SetActive(false);
+    }
+    public void openControls(){
+        settings.SetActive(false);
+        controls.SetActive(true);
+    }
+    public void closeControls(){
+        settings.SetActive(true);
+        controls.SetActive(false);
+    }
+    public void setVolume(){
+        PlayerPrefs.SetFloat("volume", sliderVolume.value);
+    }
+    public void mute(){
+        PlayerPrefs.SetInt("isMuted", toggleVolume.isOn ? 1 : 0);
     }
 }
 
