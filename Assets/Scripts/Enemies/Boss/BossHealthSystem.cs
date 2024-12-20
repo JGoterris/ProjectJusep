@@ -21,6 +21,9 @@ public class BossHealthSystem : MonoBehaviour, IDamageable
         if (actualHealth <= 0)
         {
             boss.Kill();
+        } else
+        {
+            boss.Restore();
         }
     }
 }
