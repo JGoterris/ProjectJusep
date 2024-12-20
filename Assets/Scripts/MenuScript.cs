@@ -12,8 +12,13 @@ public class MenuScript : MonoBehaviour
     [SerializeField] private Toggle toggleVolume;
 
     void Start(){
+        Time.timeScale = 1;
         sliderVolume.value = PlayerPrefs.GetFloat("volume", 1);
+        if(sliderVolume.value == 1)
+            PlayerPrefs.SetFloat("volume", 1);
         toggleVolume.isOn = PlayerPrefs.GetInt("isMuted", 0) == 1 ? true : false;
+        if(toggleVolume.isOn == false)
+            PlayerPrefs.SetInt("isMuted", 0);
         AudioListener.volume = PlayerPrefs.GetFloat("volume");
         AudioListener.pause = PlayerPrefs.GetInt("isMuted") == 1 ? true : false;
     }

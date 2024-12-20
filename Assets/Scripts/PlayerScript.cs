@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 
-public class PlayerScript : MonoBehaviour, IDeath
+public class PlayerScript : MonoBehaviour, IDeath, ISlowable
 {
     public float walkingSpeed = 7.5f;
     public float runningSpeed = 11.5f;
@@ -14,6 +14,11 @@ public class PlayerScript : MonoBehaviour, IDeath
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
+    private int numPuerta = 0;
+    private float downSpeed = 0;
+    private float slowDuration = 0;
+    private bool slowed = false;
+    private float slowCronometro = 0;
 
 
     CharacterController characterController;
@@ -22,6 +27,7 @@ public class PlayerScript : MonoBehaviour, IDeath
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
     private HealthComponent myHealth;
+    public BoxCollider[] puertas;
 
     [HideInInspector]
     public bool canMove = true;
@@ -49,8 +55,8 @@ public class PlayerScript : MonoBehaviour, IDeath
         Vector3 right = transform.TransformDirection(Vector3.right);
         // Press Left Shift to run
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
+        float curSpeedX = canMove ? ((isRunning ? runningSpeed : walkingSpeed) - downSpeed) * Input.GetAxis("Vertical") : 0;
+        float curSpeedY = canMove ? ((isRunning ? runningSpeed : walkingSpeed) - downSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
@@ -95,15 +101,35 @@ public class PlayerScript : MonoBehaviour, IDeath
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+
+        if(slowed){
+            slowCronometro += Time.deltaTime;
+            if(slowCronometro >= slowDuration){
+                downSpeed = 0;
+                slowCronometro = 0;
+                slowed = false;
+            }
+        }
     }
 
     void OnTriggerEnter(Collider coll){
         if(coll.gameObject.tag == "GoblinSword"){
             myHealth.TakeDamage(10);
+        } else if(coll.gameObject.tag == "ControlPuerta"){
+            for(int i = numPuerta; i < numPuerta+2; i++)
+                puertas[i].isTrigger = false;
+            numPuerta += 2;
         }
     }
 
     public void die(){
         Destroy(this.gameObject);
+    }
+
+    public void SlowDown(float downS, float duration){
+        downSpeed = downS;
+        slowCronometro = 0;
+        slowDuration = duration;
+        slowed = true;
     }
 }

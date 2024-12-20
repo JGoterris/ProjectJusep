@@ -8,9 +8,10 @@ public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath
     public Quaternion angulo;
     public float grado;
     private Animation ani;
-    public GameObject target;
+    private GameObject target;
     private bool atacando = false;
     private NavMeshAgent agent;
+    private GoblinDeaths goblinDeaths;
     [SerializeField] private float agentSpeed = 4;
     private bool walkpointSet;
     private Vector3 destPoint;
@@ -22,11 +23,14 @@ public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath
     private AudioSource audioSource;
     [SerializeField] private float walkpointRange;
     public AudioClip[] audioClips;
+    [SerializeField] private LayerMask obstacleLayer;
     void Start()
     {
         ani = GetComponent<Animation>();
         agent = GetComponent<NavMeshAgent>();
         audioSource = GetComponent<AudioSource>();
+        target = GameObject.Find("Player");
+        goblinDeaths = GameObject.Find("EventSystem").GetComponent<GoblinDeaths>();
         walkpointSet = false;
         downSpeed = 0;
         slowDuration = 0;
@@ -36,11 +40,12 @@ public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath
     // Update is called once per frame
     void Update()
     {
-        Comportamiento_Enemigo();
+        if(!died)
+            Comportamiento_Enemigo();
     }
 
     public void Comportamiento_Enemigo(){
-        if(Vector3.Distance(transform.position, target.transform.position) > 8){
+        if(Vector3.Distance(transform.position, target.transform.position) > 20){
             agent.isStopped = false;
             ani.Stop("run");
             Patrol();
@@ -48,13 +53,22 @@ public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath
         } else{
             if(Vector3.Distance(transform.position, target.transform.position) > 2 && !atacando){
                 agent.isStopped = true;
-                var lookPos = target.transform.position - transform.position;
-                lookPos.y = 0;
-                var rotation = Quaternion.LookRotation(lookPos);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
+                if (!Physics.Raycast(transform.position, Vector3.forward, 1f, obstacleLayer)){
+                    var lookPos = target.transform.position - transform.position;
+                    lookPos.y = 0;
+                    var rotation = Quaternion.LookRotation(lookPos);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
+                    transform.Translate(Vector3.forward * (3-downSpeed) * Time.deltaTime);
+                } else{
+                    var lookPos = target.transform.position - transform.position;
+                    lookPos.x += 90;
+                    lookPos.y = 0;
+                    var rotation = Quaternion.LookRotation(lookPos);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
+                    transform.Translate(Vector3.forward * (4-downSpeed) * Time.deltaTime);
+                }
                 ani.Stop("walk");
                 ani.Play("run");
-                transform.Translate(Vector3.forward * (3-downSpeed) * Time.deltaTime);
             } else if (!atacando){
                 audioSource.clip = audioClips[0];
                 audioSource.Play();
@@ -125,14 +139,24 @@ public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath
     }
     
     public void die(){
-        // No sé por qué no va
         if(!died) {
+            died = true;
             ani.Stop("walk");
             ani.Stop("run");
             ani.Stop("attack3");
-            ani.Play("death");
+            if (ani["death"] != null)
+            {
+                ani.Play("death");
+                Debug.Log("Muriendo");
+            }
+            else
+            {
+                Debug.LogError("Animación de muerte no encontrada.");
+            }
+            goblinDeaths.goblinMuerto();
             StartCoroutine(WaitForAnimationToDestroy(ani["death"].length));
-            died = true;
         }
     }
+
+    
 }

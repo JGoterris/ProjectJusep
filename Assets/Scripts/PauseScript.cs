@@ -10,6 +10,7 @@ public class PauseScript : MonoBehaviour
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private Slider sliderVolume;
     [SerializeField] private Toggle toggleVolume;
+    [SerializeField] private AudioSource[] pauseSounds;
 
     void Start(){
         paused = false;
@@ -33,6 +34,11 @@ public class PauseScript : MonoBehaviour
         
         pauseUI.SetActive(paused);
         
+        if(paused){
+            for(int i = 0; i < pauseSounds.Length; i++)
+                pauseSounds[i].Stop();
+        }
+
         Cursor.lockState = paused ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = paused;
     }

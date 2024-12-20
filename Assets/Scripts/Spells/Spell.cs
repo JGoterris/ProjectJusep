@@ -60,6 +60,7 @@ public class Spell : MonoBehaviour
     }
 
     private void Explode(){
+        myCollider.enabled = false;
         if (SpellCollisionSound != null)
         {
             SpellCollisionSound.Play();

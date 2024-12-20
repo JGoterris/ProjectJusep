@@ -10,6 +10,8 @@ TagManager:
   - IceSpell
   - GoblinEnemy
   - Hittable
+  - Puerta
+  - ControlPuerta
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - obstacleLayer
   - 
   - 
   - 
