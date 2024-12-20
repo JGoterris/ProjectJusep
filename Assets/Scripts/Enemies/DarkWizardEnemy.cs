@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath
+public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
 {
     private Animator animator;
-    private NavMeshAgent agent;
     private DarkWizardMagicSystem magicSystem;
 
     // Modifiable variables (on engine)
@@ -63,7 +62,6 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath
     void Awake()
     {
         animator = GetComponent<Animator>();
-        agent = GetComponent<NavMeshAgent>();
         magicSystem = GetComponent<DarkWizardMagicSystem>();
         audioSource = GetComponent<AudioSource>();
 
@@ -149,7 +147,9 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath
 
         if (patrolDestination.Equals(Vector3.zero))
         {
-            patrolDestination = Random.onUnitSphere * Random.Range(2, 4);
+            Vector2 unitCircle = Random.insideUnitCircle * Random.Range(2, 4);
+            patrolDestination.x = unitCircle.x;
+            patrolDestination.z = unitCircle.y;
             patrolDestination.Normalize();
             transform.LookAt(patrolDestination);
         }
@@ -192,8 +192,6 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath
     {
         if (castSpellTimer >= castSpellDelay)
         {
-            
-
             transform.LookAt(target.position);
             // Calculate rotation
             Vector3 directorVector = target.position - transform.position;
@@ -230,7 +228,9 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath
     {
         if (repositionVector == Vector3.zero)
         {
-            repositionVector = Random.insideUnitCircle * Random.Range(2, 3);
+            Vector2 unitCircle = Random.insideUnitCircle * Random.Range(2, 3);
+            repositionVector.x = unitCircle.x;
+            repositionVector.z = unitCircle.y;
             repositionVector.Normalize();
         }
 
@@ -249,8 +249,8 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath
     void MoveEntity(Vector3 destination, float speed)
     {
         Physics.Raycast(transform.position, destination, out RaycastHit hit, Mathf.Infinity);
-
-        if (hit.distance > 0)
+        
+        if (hit.distance > 0.2)
         {
             transform.Translate((speed - speedReduction) * Time.deltaTime * destination);
         }
@@ -267,5 +267,10 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath
 
     public void die(){
         Destroy(this.gameObject);
+    }
+
+    public void SetTarget(Transform target)
+    {
+        this.target = target;
     }
 }

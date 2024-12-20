@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,7 +43,16 @@ public class Spell : MonoBehaviour
             Component[] damageableComponents = other.gameObject.GetComponents(typeof(IDamageable));
             IDamageable enemyHealth = damageableComponents[0] as IDamageable;
             ParticleSystem enemyBlood = other.GetComponent<ParticleSystem>();
-            ISlowable enemyController = slowableComponents[0] as ISlowable;
+            ISlowable enemyController;
+            
+            try
+            {
+                enemyController = slowableComponents[0] as ISlowable;
+            } catch(IndexOutOfRangeException) 
+            {
+                enemyController = null;
+            }
+            
 
             if (enemyBlood != null)
                 enemyBlood.Play();
