@@ -2079,9 +2079,13 @@ MonoBehaviour:
   audioClips:
   - {fileID: 8300000, guid: 1660cf9cf85863c4f882a64d301d82ee, type: 3}
   - {fileID: 8300000, guid: c97faf37e1976654fb99318fd74cfe7e, type: 3}
+  - {fileID: 8300000, guid: 03782976e24bc8e49957f6ee44568d4c, type: 3}
   playerCamera: {fileID: 7027733484740077632}
   lookSpeed: 2
   lookXLimit: 45
+  puertas: []
+  deathUI: {fileID: 0}
+  pauseScript: {fileID: 0}
   canMove: 1
 --- !u!114 &1552741028
 MonoBehaviour:

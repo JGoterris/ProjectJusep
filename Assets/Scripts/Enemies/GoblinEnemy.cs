@@ -53,20 +53,11 @@ public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath
         } else{
             if(Vector3.Distance(transform.position, target.transform.position) > 2 && !atacando){
                 agent.isStopped = true;
-                if (!Physics.Raycast(transform.position, Vector3.forward, 1f, obstacleLayer)){
-                    var lookPos = target.transform.position - transform.position;
-                    lookPos.y = 0;
-                    var rotation = Quaternion.LookRotation(lookPos);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
-                    transform.Translate(Vector3.forward * (3-downSpeed) * Time.deltaTime);
-                } else{
-                    var lookPos = target.transform.position - transform.position;
-                    lookPos.x += 90;
-                    lookPos.y = 0;
-                    var rotation = Quaternion.LookRotation(lookPos);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
-                    transform.Translate(Vector3.forward * (4-downSpeed) * Time.deltaTime);
-                }
+                var lookPos = target.transform.position - transform.position;
+                lookPos.y = 0;
+                var rotation = Quaternion.LookRotation(lookPos);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
+                transform.Translate(Vector3.forward * (3-downSpeed) * Time.deltaTime);
                 ani.Stop("walk");
                 ani.Play("run");
             } else if (!atacando){
@@ -153,6 +144,8 @@ public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath
             {
                 Debug.LogError("Animación de muerte no encontrada.");
             }
+            audioSource.clip = audioClips[1];
+            audioSource.Play();
             goblinDeaths.goblinMuerto();
             StartCoroutine(WaitForAnimationToDestroy(ani["death"].length));
         }

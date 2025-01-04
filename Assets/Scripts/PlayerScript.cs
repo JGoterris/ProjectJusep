@@ -28,6 +28,8 @@ public class PlayerScript : MonoBehaviour, IDeath, ISlowable
     float rotationX = 0;
     private HealthComponent myHealth;
     public BoxCollider[] puertas;
+    [SerializeField] private GameObject deathUI;
+    [SerializeField] private PauseScript pauseScript;
 
     [HideInInspector]
     public bool canMove = true;
@@ -123,7 +125,16 @@ public class PlayerScript : MonoBehaviour, IDeath, ISlowable
     }
 
     public void die(){
-        Destroy(this.gameObject);
+        Time.timeScale = 0;
+        deathUI.SetActive(true);
+        pauseScript.yaNoSePuedePausar();
+        audioSource.Stop();
+        audioSource.loop = false;
+        audioSource.clip = audioClips[2];
+        audioSource.Play();
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void SlowDown(float downS, float duration){

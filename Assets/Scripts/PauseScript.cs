@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PauseScript : MonoBehaviour
 {
     private bool paused = false;
+    private bool sePuedePausar = true;
     [SerializeField] private GameObject mainUI;
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private Slider sliderVolume;
@@ -23,7 +24,7 @@ public class PauseScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)){
+        if(Input.GetKeyDown(KeyCode.Escape) && sePuedePausar){
 			pauseUnpause();
         }
     }
@@ -52,5 +53,13 @@ public class PauseScript : MonoBehaviour
     }
     public void mute(){
         PlayerPrefs.SetInt("isMuted", toggleVolume.isOn ? 1 : 0);
+    }
+
+    public void restart(){
+        Application.LoadLevel("InitialRoom");
+    }
+
+    public void yaNoSePuedePausar(){
+        sePuedePausar = false;
     }
 }
