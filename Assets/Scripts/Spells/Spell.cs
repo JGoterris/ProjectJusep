@@ -15,6 +15,7 @@ public class Spell : MonoBehaviour
     [SerializeField] private ParticleSystem[] SpellDestroyParticleSystemsOnCollision;
     private float spellSpeed;
     private bool exploded;
+    private bool move;
     
 
     private void Awake(){
@@ -28,15 +29,17 @@ public class Spell : MonoBehaviour
         spellSpeed = SpellToCast.Speed;
 
         exploded = false;
+        move = true;
 
         Destroy(this.gameObject, SpellToCast.Lifetime);
     }
     private void Update(){
-        if(spellSpeed > 0)
+        if(spellSpeed > 0 && move)
             transform.Translate(Vector3.forward * spellSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other){
+        move = false;
         spellSpeed = 0;
         if(other.gameObject.CompareTag("Hittable")){
             Component[] slowableComponents = other.gameObject.GetComponents(typeof(ISlowable));
@@ -56,7 +59,7 @@ public class Spell : MonoBehaviour
 
             if (enemyBlood != null)
                 enemyBlood.Play();
-            if(CompareTag("IceSpell"))
+            if(CompareTag("IceSpell") && enemyController != null)
             {
                 enemyController.SlowDown(2, 5);
             }

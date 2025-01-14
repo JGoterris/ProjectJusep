@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -14,7 +12,7 @@ public class PlayerScript : MonoBehaviour, IDeath, ISlowable
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
-    private int numPuerta = 0;
+    //private int numPuerta = 0;
     private float downSpeed = 0;
     private float slowDuration = 0;
     private bool slowed = false;
@@ -90,12 +88,15 @@ public class PlayerScript : MonoBehaviour, IDeath, ISlowable
             bool isWalking = hasHorizontalInput || hasVerticalInput;
             animator.SetBool("isWalking", isWalking);
             audioSource.clip = isRunning ? audioClips[1] : audioClips[0];
-            if(isWalking){
-                if(!audioSource.isPlaying)
+            if (isWalking)
+            {
+                if (!audioSource.isPlaying)
                 {
                     audioSource.Play();
                 }
-            } else {
+            }
+            else
+            {
                 audioSource.Stop();
             }
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
@@ -104,9 +105,11 @@ public class PlayerScript : MonoBehaviour, IDeath, ISlowable
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
 
-        if(slowed){
+        if (slowed)
+        {
             slowCronometro += Time.deltaTime;
-            if(slowCronometro >= slowDuration){
+            if (slowCronometro >= slowDuration)
+            {
                 downSpeed = 0;
                 slowCronometro = 0;
                 slowed = false;
@@ -114,17 +117,25 @@ public class PlayerScript : MonoBehaviour, IDeath, ISlowable
         }
     }
 
-    void OnTriggerEnter(Collider coll){
-        if(coll.gameObject.tag == "GoblinSword"){
+    void OnTriggerEnter(Collider coll)
+    {
+        if (coll.gameObject.CompareTag("GoblinSword"))
+        {
             myHealth.TakeDamage(10);
-        } else if(coll.gameObject.tag == "ControlPuerta"){
-            for(int i = numPuerta; i < numPuerta+2; i++)
-                puertas[i].isTrigger = false;
-            numPuerta += 2;
+        }
+        else if (coll.gameObject.CompareTag("ControlPuerta"))
+        {
+            GameObject go = coll.gameObject;
+            CombatManager manager = go.GetComponent<CombatManager>();
+            if (manager != null)
+            {
+                manager.Lock();
+            }
         }
     }
 
-    public void die(){
+    public void die()
+    {
         Time.timeScale = 0;
         deathUI.SetActive(true);
         pauseScript.yaNoSePuedePausar();
@@ -137,7 +148,8 @@ public class PlayerScript : MonoBehaviour, IDeath, ISlowable
         Cursor.visible = true;
     }
 
-    public void SlowDown(float downS, float duration){
+    public void SlowDown(float downS, float duration)
+    {
         downSpeed = downS;
         slowCronometro = 0;
         slowDuration = duration;

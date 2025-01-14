@@ -1,55 +1,59 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
 {
+    // Movement pivot
     private Animator animator;
     private DarkWizardMagicSystem magicSystem;
 
     // Modifiable variables (on engine)
-    public float castSpellDelay = 2.5f; // Seconds
+    public float castSpellDelay = 3f; // Seconds
     public Transform target;
-    
+
     // Speed and distance
     public float patrolSpeed = 2;
     public float chaseSpeed = 4;
-    public float scareSpeed = 7;
-    public float elevationDistance = 6;
+    public float scareSpeed = 5;
+    public float elevationDistance = 10;
     public float elevationSpeed = 1;
     public float repositionDuration = 1;
 
     // Perception variables
     public float visionRadius = 8;
-    public float scareRadius = 2;
-    public float combatRadius = 6;
+    public float scareRadius = 3.5f;
+    public float combatRadius = 7;
 
     // Attack variables
     private float castSpellTimer = 0;
 
     // Patrol variables
     public float patrolSegmentTime = 2;
+
     // Slowed variables
     private float slowedDuration;
 
     // Scare variables
-    public float scareDuration = 2;
+    public float scareDuration = 1;
 
     // State variables
     private bool m_hostile = false;
     private bool m_scared = false;
     private bool m_reposition = false;
     private bool m_slowed = false;
+    private bool m_dead = false;
 
 
     // Temporal variables
     float distance;
+
+    // Timers
     float scareTimer = 0;
     float repositionTimer = 0;
     float patrolTimer = 0;
     float slowedTimer = 0;
 
+    // Ice variables
     float speedReduction = 0;
 
     Vector3 repositionVector;
@@ -77,7 +81,7 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
     // Update is called once per frame
     void Update()
     {
-        if (target != null)
+        if (target != null && !m_dead)
         {
             distance = Vector3.Distance(transform.position, target.position);
 
@@ -106,18 +110,19 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
     {
         castSpellTimer += Time.deltaTime;
 
-        
+
         if (distance <= scareRadius)
         {
             // Run away, keep distance with the player
             m_scared = true;
-            
+
         }
 
         if (!m_scared)
         {
             Orbit();
-        } else
+        }
+        else if (m_scared && !m_reposition)
         {
             GoAway();
             scareTimer += Time.deltaTime;
@@ -143,34 +148,35 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
     }
 
     void Patrol()
-    {        
+    {
 
         if (patrolDestination.Equals(Vector3.zero))
         {
-            Vector2 unitCircle = Random.insideUnitCircle * Random.Range(2, 4);
+            Vector2 unitCircle = Random.insideUnitCircle * Random.Range(2, 3);
             patrolDestination.x = unitCircle.x;
             patrolDestination.z = unitCircle.y;
             patrolDestination.Normalize();
-            transform.LookAt(patrolDestination);
+            //CustomLookAt(patrolDestination);
         }
 
         if (patrolTimer <= patrolSegmentTime)
         {
             MoveEntity(patrolDestination, patrolSpeed);
-        } else
+        }
+        else
         {
             patrolTimer = 0;
             patrolDestination = Vector3.zero;
         }
-        
+
     }
 
     void Orbit()
     {
-        transform.LookAt(target.position);
-        Vector3 directorVector = new Vector3(target.position.x - transform.position.x, 0 , target.position.z - transform.position.z);
+        Vector3 directorVector = new Vector3(target.position.x - transform.position.x, 0, target.position.z - transform.position.z);
         Vector3 rotated = Quaternion.AngleAxis(Random.Range(-45, 45), Vector3.up) * directorVector;
         rotated.Normalize();
+        CustomLookAt(target.position);
         MoveEntity(rotated, chaseSpeed);
     }
 
@@ -179,9 +185,10 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
         if (scareTimer < scareDuration)
         {
             //transform.Translate(Vector3.back * scareSpeed * Time.deltaTime);
-            transform.LookAt(target.position);
+            CustomLookAt(target.position);
             MoveEntity(Vector3.back, scareSpeed);
-        } else
+        }
+        else
         {
             m_scared = false;
             scareTimer = 0;
@@ -192,7 +199,7 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
     {
         if (castSpellTimer >= castSpellDelay)
         {
-            transform.LookAt(target.position);
+            CustomLookAt(new Vector3(target.position.x, 0, target.position.z));
             // Calculate rotation
             Vector3 directorVector = target.position - transform.position;
             Quaternion rot = Quaternion.LookRotation(directorVector);
@@ -228,7 +235,7 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
     {
         if (repositionVector == Vector3.zero)
         {
-            Vector2 unitCircle = Random.insideUnitCircle * Random.Range(2, 3);
+            Vector2 unitCircle = Random.insideUnitCircle * Random.Range(2, 4);
             repositionVector.x = unitCircle.x;
             repositionVector.z = unitCircle.y;
             repositionVector.Normalize();
@@ -236,9 +243,10 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
 
         if (repositionTimer <= repositionDuration)
         {
-            //transform.Translate(repositionVector * chaseSpeed * Time.deltaTime);
-            MoveEntity(repositionVector, chaseSpeed);
-        } else
+            MoveEntity(repositionVector, patrolSpeed);
+
+        }
+        else
         {
             m_reposition = false;
             repositionTimer = 0;
@@ -248,12 +256,20 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
 
     void MoveEntity(Vector3 destination, float speed)
     {
-        Physics.Raycast(transform.position, destination, out RaycastHit hit, Mathf.Infinity);
-        
-        if (hit.distance > 0.2)
+        Physics.Raycast(new Vector3(transform.position.x, 4f, transform.position.z), destination, out RaycastHit hit, Mathf.Infinity);
+        // Debug.DrawRay(transform.position, destination, Color.red, 0.1f);
+        // Debug.Log("Moving: " + hit.distance + " meters\tTransform: " + transform.position);
+
+        if (hit.distance > 5)
         {
             transform.Translate((speed - speedReduction) * Time.deltaTime * destination);
         }
+    }
+
+    // This funciton is needed to look at a position without interfering with the y-axis
+    private void CustomLookAt(Vector3 destination)
+    {
+        transform.LookAt(new Vector3(destination.x, 0, destination.z));
     }
 
     public void SlowDown(float downS, float duration)
@@ -265,7 +281,21 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
         speedReduction = downS;
     }
 
-    public void die(){
+    public void die()
+    {
+        m_dead = true;
+        StartCoroutine(WaitForDyingAnimation());
+    }
+
+    IEnumerator WaitForDyingAnimation()
+    {
+        audioSource.clip = audioClips[1];
+        audioSource.Play();
+        animator.SetBool("dying", true);
+        animator.SetBool("patrolling", false);
+        animator.SetBool("attacking", false);
+        animator.SetBool("chasing", false);
+        yield return new WaitForSeconds(2.5f);
         Destroy(this.gameObject);
     }
 

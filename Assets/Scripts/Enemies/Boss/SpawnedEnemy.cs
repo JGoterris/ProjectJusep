@@ -5,15 +5,18 @@ using UnityEngine;
 public class SpawnedEnemy : MonoBehaviour, ITriggers
 {
     // Start is called before the first frame update
-    public BossEnemy boss;
+     ITriggerReceiver receiver;
 
-    public void Trigger(BossEnemy boss)
+    public void Trigger(ITriggerReceiver receiver)
     {
-        this.boss = boss;
+        this.receiver = receiver;
     }
 
     private void OnDestroy()
     {
-        boss.Decrease();
+        if (receiver != null)
+        {
+            receiver.Decrease();
+        }
     }
 }

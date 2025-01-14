@@ -11594,6 +11594,7 @@ GameObject:
   - component: {fileID: 400702}
   - component: {fileID: 11100000}
   - component: {fileID: 1870715727}
+  - component: {fileID: 3365467828085299295}
   - component: {fileID: 1920156261582221107}
   - component: {fileID: 5166790684413800991}
   - component: {fileID: 4411444006957820190}
@@ -11676,6 +11677,19 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &3365467828085299295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecad6d9dacdd7a348b6e5a25fa6da14f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combatManager: {fileID: 0}
 --- !u!136 &1920156261582221107
 CapsuleCollider:
   m_ObjectHideFlags: 0

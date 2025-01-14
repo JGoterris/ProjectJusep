@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath
+public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
 {
     public Quaternion angulo;
     public float grado;
@@ -151,5 +151,8 @@ public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath
         }
     }
 
-    
+    public void SetTarget(Transform target)
+    {
+        this.target = target.gameObject;
+    }
 }

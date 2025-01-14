@@ -6647,8 +6647,8 @@ GameObject:
   - component: {fileID: 5139338355412576637}
   - component: {fileID: 5139338355412576516}
   - component: {fileID: 5139338355412576635}
-  - component: {fileID: 5139338355412576634}
   - component: {fileID: 5139338355412576633}
+  - component: {fileID: 1131774484032603869}
   - component: {fileID: 1994515746256114692}
   m_Layer: 0
   m_Name: DarkWizard
@@ -11489,39 +11489,18 @@ MonoBehaviour:
   target: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 4
-  scareSpeed: 7
-  elevationDistance: 6
+  scareSpeed: 5
+  elevationDistance: 10
   elevationSpeed: 1
   repositionDuration: 1
   visionRadius: 8
-  scareRadius: 3
+  scareRadius: 3.5
   combatRadius: 7
   patrolSegmentTime: 2
-  scareDuration: 2
+  scareDuration: 1
   audioClips:
   - {fileID: 8300000, guid: 6ac94ef6973632d4287fcb08f825cf03, type: 3}
---- !u!195 &5139338355412576634
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5138911193828737425}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  - {fileID: 8300000, guid: 662fdd28f889fcf428281735de0e42c7, type: 3}
 --- !u!114 &5139338355412576633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11536,6 +11515,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 50
   healthBar: {fileID: 0}
+--- !u!114 &1131774484032603869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5138911193828737425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecad6d9dacdd7a348b6e5a25fa6da14f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combatManager: {fileID: 0}
 --- !u!82 &1994515746256114692
 AudioSource:
   m_ObjectHideFlags: 0
