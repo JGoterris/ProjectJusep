@@ -931,6 +931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   victoryMenu: {fileID: 1299546156}
+  pauseScript: {fileID: 1683133113}
 --- !u!81 &426741674 stripped
 AudioListener:
   m_CorrespondingSourceObject: {fileID: 7027733484740077635, guid: 1ac6abf282d028345bad1eb9cc95e07f, type: 3}
@@ -1849,7 +1850,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xA1you won!\n\nThanks for playing the game"
+  m_text: 'you won!
+
+
+    Thanks for playing the game'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5bc216833cf86d84baabcd174d30a74e, type: 2}
   m_sharedMaterial: {fileID: -4544674654940246735, guid: 5bc216833cf86d84baabcd174d30a74e, type: 2}
