@@ -10,6 +10,7 @@ public class BossHealthSystem : MonoBehaviour, IDamageable, IDeath
     // The rounds variable specifies the number of rounds that the boss will play
 
     public int rounds;
+    ActivateVictory victory;
     private int actualRound; // Number of phases the boss has
 
     private BossSpawner boss;
@@ -17,6 +18,7 @@ public class BossHealthSystem : MonoBehaviour, IDamageable, IDeath
     private void Start()
     {
         boss = GetComponent<BossSpawner>();
+        victory = GetComponent<ActivateVictory>();
         actualRound = rounds;
     }
 
@@ -34,6 +36,7 @@ public class BossHealthSystem : MonoBehaviour, IDamageable, IDeath
 
     public void die()
     {
+        victory.Victory();
         Destroy(this.gameObject);
     }
 }
