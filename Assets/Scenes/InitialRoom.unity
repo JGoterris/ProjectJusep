@@ -2682,7 +2682,11 @@ PrefabInstance:
       objectReference: {fileID: 1704578224}
     - target: {fileID: 1552741028, guid: 1ac6abf282d028345bad1eb9cc95e07f, type: 3}
       propertyPath: manaRechargeRate
-      value: 100
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1552741028, guid: 1ac6abf282d028345bad1eb9cc95e07f, type: 3}
+      propertyPath: timeBetweenCasts
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5175351942907798507, guid: 1ac6abf282d028345bad1eb9cc95e07f, type: 3}
       propertyPath: healthBar

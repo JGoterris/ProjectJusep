@@ -138,7 +138,6 @@ public class GoblinEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
             if (ani["death"] != null)
             {
                 ani.Play("death");
-                Debug.Log("Muriendo");
             }
             else
             {
