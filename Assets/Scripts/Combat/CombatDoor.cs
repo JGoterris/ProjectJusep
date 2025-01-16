@@ -7,7 +7,8 @@ public class CombatDoor : MonoBehaviour
 
     private Collider collider;
 
-    public CombatAction action;
+    public DoorAction doorAction;
+
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +25,9 @@ public class CombatDoor : MonoBehaviour
     {
         collider.isTrigger = true;
 
-        if (action != null)
+        if (doorAction != null)
         {
-            action.DoAction();
+            doorAction.DoAction();
         }
     }
 }

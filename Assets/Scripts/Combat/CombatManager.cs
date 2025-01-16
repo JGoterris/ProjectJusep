@@ -48,6 +48,7 @@ public class CombatManager : MonoBehaviour, ITriggerReceiver
             {
                 doors[i].LockDoor();
             }
+            locked = true;
         }
     }
 }

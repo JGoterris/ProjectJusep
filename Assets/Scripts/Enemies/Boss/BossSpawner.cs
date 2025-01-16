@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class BossSpawner : MonoBehaviour, ITriggerReceiver
+public class BossSpawner : MonoBehaviour, ITriggerReceiver, ITargeteable
 {
 
     // Boss Components
@@ -46,23 +46,25 @@ public class BossSpawner : MonoBehaviour, ITriggerReceiver
     void Update()
     {
         // Look at the player
-        transform.LookAt(target);
-
-        if (!onPhase)
+        if (target != null)
         {
-            // Not killed
-            onPhase = true;
-            StartCoroutine(SpawnEnemies());
-            
-        }
+            transform.LookAt(target);
 
-        if (enemiesOnArena == 0 && onPhase == true && shieldsUp == true)
-        {
-            //Debug.Log("Shield Down");
-            shield.Down();
-            shieldsUp = false;
+            if (!onPhase)
+            {
+                // Not killed
+                onPhase = true;
+                StartCoroutine(SpawnEnemies());
+
+            }
+
+            if (enemiesOnArena == 0 && onPhase == true && shieldsUp == true)
+            {
+                //Debug.Log("Shield Down");
+                shield.Down();
+                shieldsUp = false;
+            }
         }
-        
     }
 
     IEnumerator SpawnEnemies()
@@ -125,5 +127,10 @@ public class BossSpawner : MonoBehaviour, ITriggerReceiver
         shieldsUp = true;
         onPhase = false;
         enemiesOnArena = 0;
+    }
+
+    public void SetTarget(Transform target)
+    {
+        this.target = target;
     }
 }

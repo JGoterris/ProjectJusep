@@ -122,7 +122,7 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
         {
             Orbit();
         }
-        else if (m_scared && !m_reposition)
+        else
         {
             GoAway();
             scareTimer += Time.deltaTime;
@@ -260,7 +260,7 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
         // Debug.DrawRay(transform.position, destination, Color.red, 0.1f);
         // Debug.Log("Moving: " + hit.distance + " meters\tTransform: " + transform.position);
 
-        if (hit.distance > 5)
+        if (hit.distance > 0.5f)
         {
             transform.Translate((speed - speedReduction) * Time.deltaTime * destination);
         }
@@ -302,5 +302,6 @@ public class DarkWizardEnemy : MonoBehaviour, ISlowable, IDeath, ITargeteable
     public void SetTarget(Transform target)
     {
         this.target = target;
+        m_hostile = true;
     }
 }
