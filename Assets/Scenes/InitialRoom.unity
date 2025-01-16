@@ -2690,7 +2690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1552741028, guid: 1ac6abf282d028345bad1eb9cc95e07f, type: 3}
       propertyPath: timeBetweenCasts
-      value: 0.5
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 5175351942907798507, guid: 1ac6abf282d028345bad1eb9cc95e07f, type: 3}
       propertyPath: healthBar
